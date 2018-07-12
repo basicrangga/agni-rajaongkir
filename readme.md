@@ -8,6 +8,7 @@ RAJAONGKIR_DIRECT= true/false
 RAJAONGKIR_API_KEY= [YOUR RAJAONGKIR KEY]
 
 ```
+Lakukan migrate sehingga schema yang dapat terbuat
 
 Jalankan artisan command untuk melakukan fetch data dari raja ongkir
 ```
