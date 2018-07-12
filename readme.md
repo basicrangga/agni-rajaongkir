@@ -16,6 +16,12 @@ php artisan rajaongkir::fetch-kota
 php artisan rajaongkir::fetch-province
 ```
 
+Ujicoba get request untuk REST search provinces dan city dari url
+```
+/api/search/provinces?id={2to33}
+/api/search/cities?id={2to501}
+```
+
 ### common-error
 
 Apabila terjadi error tidak memperoleh data dari .env lakukan pengaturan ulang config
