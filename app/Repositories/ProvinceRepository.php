@@ -30,7 +30,7 @@ class ProvinceRepository extends BaseRepository
         $result = $this->client->get(
             config('custom.api.rajaongkir.url').'/province',[
                 'query'=>[
-                    'key'=>config('custom.api.rajaongkir.key'),
+                    'key'=>$_ENV["RAJAONGKIR_API_KEY"],
                     'id'=>$id
                 ]
             ]
