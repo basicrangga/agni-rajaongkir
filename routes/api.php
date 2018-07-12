@@ -17,8 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/register','Auth\RegisterController@register')->name('register');
+Route::post('/login','Auth\LoginController@login')->name('login');
+Route::post('/logout','Auth\LoginController@logout')->name('logout');
 
-Route::group(['namespace'=>'Api','prefix'=>'search','as'=>'api.search'],function(){
+Route::group(['namespace'=>'Api','prefix'=>'search','as'=>'api.search','middleware'=>'auth:api'],function(){
 	Route::get('/provinces','Rajaongkir\ProvinceController@search');
 	Route::get('/cities','Rajaongkir\CityController@search');
 });
