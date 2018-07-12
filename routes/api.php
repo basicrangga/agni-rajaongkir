@@ -25,5 +25,3 @@ Route::group(['namespace'=>'Api','prefix'=>'search','as'=>'api.search','middlewa
 	Route::get('/provinces','Rajaongkir\ProvinceController@search');
 	Route::get('/cities','Rajaongkir\CityController@search');
 });
-
-
