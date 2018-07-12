@@ -1,18 +1,13 @@
 # Rajaongkir REST authenticate search province and city
 
-## Branch
-
-Sprint 1 
+##Overview
 - Melakukan fetch data province dan city dari [Rajaongkir](https://rajaongkir.com/) 
 - Request REST untuk search province dan city;
-
-Sprint 2 
 - Implementasi swapable implementation untuk direct request ke rajaongkir atau menggunakan data yang telah di fetch di database
 - Menambahkan otentikasi kepada REST search
 - Unit testing untuk REST login, logout dan register
 
-
-## sprint_1
+##How To
 
 Tambahkan value pada .env 
 ```
@@ -26,6 +21,10 @@ Jalankan artisan command untuk melakukan fetch data dari raja ongkir
 php artisan rajaongkir::fetch-kota
 php artisan rajaongkir::fetch-province
 ```
+Jalankan laravel
+```
+php artisan serve
+```
 
 Ujicoba get request untuk REST search provinces dan city dari url
 ```
@@ -33,8 +32,9 @@ Ujicoba get request untuk REST search provinces dan city dari url
 /api/search/cities?id={2to501}
 ```
 
-## sprint_2
-Jalankan unit test 
+perbarui nilai RAJAONGKIR_DIRECT di file .env untuk mendapatkan hasil REST dari database
+
+Jalankan unit test untuk mengetahui kondisi yang tercakup saat ini
 ```
 php vendor/phpunit/phpunit/phpunit --filter namaFunction
 php vendor/phpunit/phpunit/phpunit --filter testNoCredential
