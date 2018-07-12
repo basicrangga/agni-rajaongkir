@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/register','Auth\RegisterController@register');
+Route::post('/login','Auth\LoginController@login');
+Route::post('/logout','Auth\LoginController@logout');
+
+Route::group(['namespace'=>'Api','prefix'=>'search','as'=>'api.search','middleware'=>'auth:api'],function(){
+	Route::get('/provinces','Rajaongkir\ProvinceController@search');
+	Route::get('/cities','Rajaongkir\CityController@search');
+});
+
+
