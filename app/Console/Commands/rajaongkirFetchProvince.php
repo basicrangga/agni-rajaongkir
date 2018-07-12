@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use App\Repositories\BaseRepository;
+use App\Repositories\ProvinceRepository;
 
 class rajaongkirFetchProvince extends Command
 {
@@ -13,7 +15,7 @@ class rajaongkirFetchProvince extends Command
      *
      * @var string
      */
-    protected $signature = 'rajaongkir:fetch-province';
+    protected $signature = 'rajaongkir:fetch-province {--province_id=} {return-data=false}';
 
     /**
      * The console command description.
@@ -30,11 +32,13 @@ class rajaongkirFetchProvince extends Command
     protected $client;
     protected $provinceModel = \App\Models\Province::class;
     protected $storedCity = [];
+    protected $provinceRepository;
 
-    public function __construct()
+    public function __construct(ProvinceRepository $provinceRepository)
     {
         parent::__construct();
         $this->client = new Client();
+        $this->provinceRepository = $provinceRepository;
     }
 
     /**
@@ -44,28 +48,34 @@ class rajaongkirFetchProvince extends Command
      */
     public function handle()
     {
-        $result = $this->client->get(
-            config('custom.api.rajaongkir.url').'/province',[
-                'query'=>[
-                    'key'=>config('custom.api.rajaongkir.key')
-                ]
-            ]
-        );
-
-        if($result->getStatusCode()!=200){
-            echo "Request Error $result->getStatusCode()";
+        if($this->provinceRepository->isDirectRequest()==false){
+            $this->error('ONLY SUPPORT FOR DIRECT REQUEST');
             return false;
         }
 
-        $dataReturn = json_decode($result->getBody()->getContents());
-        $dataReturn = $dataReturn->rajaongkir->results;
+        $return = $this->provinceRepository->getByProvinceId($this->option('province_id'));
 
-        echo $this->truncateProvince();
-        echo $this->storeProvince($dataReturn);
+        if( $return == false ){
+            $this->error('REQUEST FAILED');
+            return false;
+        }
+
+        if( (int) $this->option('province_id') > 0 ){
+            $this->info("Uncovered Single Store Data");
+            print_r($return);
+            return false;
+        }
+
+        if($this->argument('return-data')=='return-data'){
+            return $return;         
+        }
+
+        $this->confirmTruncate();
+        $this->storeProvince( (array) $return);
         return true;
     }
 
-    public function storeProvince($data)
+    public function storeProvince($data = [])
     {
 
         $totalData = count($data)-1;
@@ -81,7 +91,7 @@ class rajaongkirFetchProvince extends Command
 
         }
 
-        return "TOTAL Province Fetch / Stored : $totalData / $totalStore".PHP_EOL;
+        $this->info("TOTAL Province Fetch / Stored : $totalData / $totalStore".PHP_EOL);
     }
 
     public function stup($input){
@@ -92,11 +102,12 @@ class rajaongkirFetchProvince extends Command
         return $province;
     }
 
-    public function truncateProvince()
+    public function confirmTruncate()
     {   
-        $province = new $this->provinceModel;
-        $province->truncate();
-
-        return "TABLE CITY TRUNCATED".PHP_EOL;
+        if( $this->confirm('Do you wish to truncate PROVINCE table? [yes|no]') ){
+            $province = new $this->provinceModel;
+            $province->truncate();
+        }
+        $this->info("TABLE PROVINCE TRUNCATED".PHP_EOL);
     }
 }
