@@ -23,6 +23,14 @@ php vendor/phpunit/phpunit/phpunit --filter testNoCredential
 php vendor/phpunit/phpunit/phpunit --filter testRegisterSuccess
 ```
 
+## Feature
+Feature REST tersedia
+- [Register User](http://localhost:8000/api/register)
+- [Login](http://localhost:8000/api/login) 
+- [Logout](http://localhost:8000/api/logout) 
+- [Search Province By Id](http://localhost:8000/api/search/provinces?id=3)
+- [Search City By Id](http://localhost:8000/api/search/cities?id=3) 
+
 ### common-error
 
 Apabila terjadi error tidak memperoleh data dari .env lakukan pengaturan ulang config
